@@ -58,6 +58,12 @@ variable "apiserver_url" {
   description = "URL for apiserver load balancer"
 }
 
+variable "talos_api_target_group_arn" {
+  type        = string
+  description = "ARN for the Talos API load balancer target group (optional, empty string to disable)"
+  default     = ""
+}
+
 variable "dns_provider" {
   description = "DNS provider to use (cloudflare or route53)"
   type        = string
@@ -128,6 +134,13 @@ resource "aws_instance" "cp-instance" {
 resource "aws_lb_target_group_attachment" "control-plane" {
   port             = 6443
   target_group_arn = var.apiserver_target_group_arn
+  target_id        = aws_instance.cp-instance.id
+}
+
+resource "aws_lb_target_group_attachment" "talos-api" {
+  count            = var.talos_api_target_group_arn != "" ? 1 : 0
+  port             = 50000
+  target_group_arn = var.talos_api_target_group_arn
   target_id        = aws_instance.cp-instance.id
 }
 
