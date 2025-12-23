@@ -22,14 +22,12 @@ run "valid_cp_node_configuration" {
     root_disk_mount                = "/dev/xvda"
     sysctls                        = {}
     oidc_configuration = {
-      bucket                 = "test-oidc-bucket"
-      ca_file                = "/ca.crt"
-      client_id              = "kubernetes"
-      groups_claim           = "groups"
-      issuer                 = "https://oidc.example.com"
-      jwks                   = "https://oidc.example.com/.well-known/jwks.json"
-      service_account_issuer = "https://oidc.example.com"
-      username_claim         = "email"
+      # IRSA configuration
+      bucket_name = "test-oidc-bucket"
+      jwks_url    = "https://oidc.example.com/.well-known/jwks.json"
+      sa_issuer   = "https://oidc.example.com"
+      # Kubernetes OIDC auth disabled by default
+      enable_k8s_oidc_auth = false
     }
     talos_machine_secrets = {
       cluster_id     = "test-cluster-id"
@@ -85,14 +83,12 @@ run "bootstrap_node" {
     root_disk_mount                = "/dev/xvda"
     sysctls                        = {}
     oidc_configuration = {
-      bucket                 = "test-oidc-bucket"
-      ca_file                = "/ca.crt"
-      client_id              = "kubernetes"
-      groups_claim           = "groups"
-      issuer                 = "https://oidc.example.com"
-      jwks                   = "https://oidc.example.com/.well-known/jwks.json"
-      service_account_issuer = "https://oidc.example.com"
-      username_claim         = "email"
+      # IRSA configuration
+      bucket_name = "test-oidc-bucket"
+      jwks_url    = "https://oidc.example.com/.well-known/jwks.json"
+      sa_issuer   = "https://oidc.example.com"
+      # Kubernetes OIDC auth disabled by default
+      enable_k8s_oidc_auth = false
     }
     talos_machine_secrets = {
       cluster_id     = "test-cluster-id"
@@ -133,14 +129,12 @@ run "target_group_attachment" {
     root_disk_mount                = "/dev/xvda"
     sysctls                        = {}
     oidc_configuration = {
-      bucket                 = "test-oidc-bucket"
-      ca_file                = "/ca.crt"
-      client_id              = "kubernetes"
-      groups_claim           = "groups"
-      issuer                 = "https://oidc.example.com"
-      jwks                   = "https://oidc.example.com/.well-known/jwks.json"
-      service_account_issuer = "https://oidc.example.com"
-      username_claim         = "email"
+      # IRSA configuration
+      bucket_name = "test-oidc-bucket"
+      jwks_url    = "https://oidc.example.com/.well-known/jwks.json"
+      sa_issuer   = "https://oidc.example.com"
+      # Kubernetes OIDC auth disabled by default
+      enable_k8s_oidc_auth = false
     }
     talos_machine_secrets = {
       cluster_id     = "test-cluster-id"
@@ -186,14 +180,12 @@ run "dns_record_creation" {
     root_disk_mount                = "/dev/xvda"
     sysctls                        = {}
     oidc_configuration = {
-      bucket                 = "test-oidc-bucket"
-      ca_file                = "/ca.crt"
-      client_id              = "kubernetes"
-      groups_claim           = "groups"
-      issuer                 = "https://oidc.example.com"
-      jwks                   = "https://oidc.example.com/.well-known/jwks.json"
-      service_account_issuer = "https://oidc.example.com"
-      username_claim         = "email"
+      # IRSA configuration
+      bucket_name = "test-oidc-bucket"
+      jwks_url    = "https://oidc.example.com/.well-known/jwks.json"
+      sa_issuer   = "https://oidc.example.com"
+      # Kubernetes OIDC auth disabled by default
+      enable_k8s_oidc_auth = false
     }
     talos_machine_secrets = {
       cluster_id     = "test-cluster-id"
@@ -246,14 +238,12 @@ run "custom_sysctls" {
       "net.core.somaxconn" = "32768"
     }
     oidc_configuration = {
-      bucket                 = "test-oidc-bucket"
-      ca_file                = "/ca.crt"
-      client_id              = "kubernetes"
-      groups_claim           = "groups"
-      issuer                 = "https://oidc.example.com"
-      jwks                   = "https://oidc.example.com/.well-known/jwks.json"
-      service_account_issuer = "https://oidc.example.com"
-      username_claim         = "email"
+      # IRSA configuration
+      bucket_name = "test-oidc-bucket"
+      jwks_url    = "https://oidc.example.com/.well-known/jwks.json"
+      sa_issuer   = "https://oidc.example.com"
+      # Kubernetes OIDC auth disabled by default
+      enable_k8s_oidc_auth = false
     }
     talos_machine_secrets = {
       cluster_id     = "test-cluster-id"

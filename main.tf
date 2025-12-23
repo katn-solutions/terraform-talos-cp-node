@@ -80,15 +80,20 @@ variable "dns_zone_id" {
 
 variable "oidc_configuration" {
   type = object({
-    bucket_name    = string
-    ca_file_path   = string
-    client_id      = string
-    groups_claim   = string
-    issuer_url     = string
-    jwks_url       = string
-    sa_issuer      = string
-    username_claim = string
+    # IRSA (IAM Roles for Service Accounts) - Required
+    bucket_name = string
+    jwks_url    = string
+    sa_issuer   = string
+
+    # Kubernetes OIDC Authentication - Optional (defaults to disabled)
+    enable_k8s_oidc_auth = optional(bool, false)
+    ca_file_path         = optional(string, "")
+    client_id            = optional(string, "")
+    groups_claim         = optional(string, "")
+    issuer_url           = optional(string, "")
+    username_claim       = optional(string, "")
   })
+  description = "OIDC configuration for IRSA and optional Kubernetes OIDC authentication"
 }
 
 variable "allow_scheduling_control_plane" {
@@ -257,15 +262,21 @@ resource "talos_machine_configuration_apply" "cp-instance" {
               }
             ]
           }
-          extraArgs = {
-            oidc-issuer-url : var.oidc_configuration.issuer_url
-            oidc-client-id : var.oidc_configuration.client_id
-            oidc-ca-file : var.oidc_configuration.ca_file_path
-            oidc-username-claim : var.oidc_configuration.username_claim
-            oidc-groups-claim : var.oidc_configuration.groups_claim
-            service-account-issuer : var.oidc_configuration.sa_issuer
-            service-account-jwks-uri : var.oidc_configuration.jwks_url
-          }
+          extraArgs = merge(
+            {
+              # IRSA (Service Account) configuration - always enabled
+              service-account-issuer : var.oidc_configuration.sa_issuer
+              service-account-jwks-uri : var.oidc_configuration.jwks_url
+            },
+            # Kubernetes OIDC Authentication - only add if enabled
+            var.oidc_configuration.enable_k8s_oidc_auth ? {
+              oidc-issuer-url : var.oidc_configuration.issuer_url
+              oidc-client-id : var.oidc_configuration.client_id
+              oidc-ca-file : var.oidc_configuration.ca_file_path
+              oidc-username-claim : var.oidc_configuration.username_claim
+              oidc-groups-claim : var.oidc_configuration.groups_claim
+            } : {}
+          )
         }
       }
     })
