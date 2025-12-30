@@ -1,3 +1,12 @@
+# Mock provider configurations for testing
+mock_provider "cloudflare" {
+  mock_data "cloudflare_zone" {
+    defaults = {
+      id = "test-zone-id"
+    }
+  }
+}
+
 # Test valid control plane node configuration
 run "valid_cp_node_configuration" {
   command = plan
@@ -30,11 +39,47 @@ run "valid_cp_node_configuration" {
       enable_k8s_oidc_auth = false
     }
     talos_machine_secrets = {
-      cluster_id     = "test-cluster-id"
-      cluster_secret = "test-secret"
-      machine_token  = "test-token"
-      ca_crt         = "test-ca"
-      ca_key         = "test-key"
+      id            = "test-secrets-id"
+      talos_version = "v1.5.0"
+      machine_secrets = {
+        certs = {
+          etcd = {
+            cert = "dGVzdC1ldGNkLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1ldGNkLWtleS1kYXRhCg=="
+          }
+          k8s = {
+            cert = "dGVzdC1rOHMtY2VydC1kYXRhCg=="
+            key  = "dGVzdC1rOHMta2V5LWRhdGEK"
+          }
+          k8s_aggregator = {
+            cert = "dGVzdC1hZ2dyZWdhdG9yLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1hZ2dyZWdhdG9yLWtleS1kYXRhCg=="
+          }
+          k8s_serviceaccount = {
+            key = "dGVzdC1zYS1rZXktZGF0YQo="
+          }
+          os = {
+            cert = "dGVzdC1vcy1jZXJ0LWRhdGEK"
+            key  = "dGVzdC1vcy1rZXktZGF0YQo="
+          }
+        }
+        cluster = {
+          id     = "test-cluster-id"
+          secret = "test-cluster-secret"
+        }
+        secrets = {
+          bootstrap_token             = "test-bootstrap-token"
+          secretbox_encryption_secret = "test-secretbox-secret"
+        }
+        trustdinfo = {
+          token = "test-trustd-token"
+        }
+      }
+      client_configuration = {
+        ca_certificate     = "dGVzdC1jYS1jZXJ0LWRhdGEK"
+        client_certificate = "dGVzdC1jbGllbnQtY2VydC1kYXRhCg=="
+        client_key         = "dGVzdC1jbGllbnQta2V5LWRhdGEK"
+      }
     }
   }
 
@@ -91,11 +136,47 @@ run "bootstrap_node" {
       enable_k8s_oidc_auth = false
     }
     talos_machine_secrets = {
-      cluster_id     = "test-cluster-id"
-      cluster_secret = "test-secret"
-      machine_token  = "test-token"
-      ca_crt         = "test-ca"
-      ca_key         = "test-key"
+      id            = "test-secrets-id"
+      talos_version = "v1.5.0"
+      machine_secrets = {
+        certs = {
+          etcd = {
+            cert = "dGVzdC1ldGNkLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1ldGNkLWtleS1kYXRhCg=="
+          }
+          k8s = {
+            cert = "dGVzdC1rOHMtY2VydC1kYXRhCg=="
+            key  = "dGVzdC1rOHMta2V5LWRhdGEK"
+          }
+          k8s_aggregator = {
+            cert = "dGVzdC1hZ2dyZWdhdG9yLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1hZ2dyZWdhdG9yLWtleS1kYXRhCg=="
+          }
+          k8s_serviceaccount = {
+            key = "dGVzdC1zYS1rZXktZGF0YQo="
+          }
+          os = {
+            cert = "dGVzdC1vcy1jZXJ0LWRhdGEK"
+            key  = "dGVzdC1vcy1rZXktZGF0YQo="
+          }
+        }
+        cluster = {
+          id     = "test-cluster-id"
+          secret = "test-cluster-secret"
+        }
+        secrets = {
+          bootstrap_token             = "test-bootstrap-token"
+          secretbox_encryption_secret = "test-secretbox-secret"
+        }
+        trustdinfo = {
+          token = "test-trustd-token"
+        }
+      }
+      client_configuration = {
+        ca_certificate     = "dGVzdC1jYS1jZXJ0LWRhdGEK"
+        client_certificate = "dGVzdC1jbGllbnQtY2VydC1kYXRhCg=="
+        client_key         = "dGVzdC1jbGllbnQta2V5LWRhdGEK"
+      }
     }
   }
 
@@ -137,11 +218,47 @@ run "target_group_attachment" {
       enable_k8s_oidc_auth = false
     }
     talos_machine_secrets = {
-      cluster_id     = "test-cluster-id"
-      cluster_secret = "test-secret"
-      machine_token  = "test-token"
-      ca_crt         = "test-ca"
-      ca_key         = "test-key"
+      id            = "test-secrets-id"
+      talos_version = "v1.5.0"
+      machine_secrets = {
+        certs = {
+          etcd = {
+            cert = "dGVzdC1ldGNkLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1ldGNkLWtleS1kYXRhCg=="
+          }
+          k8s = {
+            cert = "dGVzdC1rOHMtY2VydC1kYXRhCg=="
+            key  = "dGVzdC1rOHMta2V5LWRhdGEK"
+          }
+          k8s_aggregator = {
+            cert = "dGVzdC1hZ2dyZWdhdG9yLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1hZ2dyZWdhdG9yLWtleS1kYXRhCg=="
+          }
+          k8s_serviceaccount = {
+            key = "dGVzdC1zYS1rZXktZGF0YQo="
+          }
+          os = {
+            cert = "dGVzdC1vcy1jZXJ0LWRhdGEK"
+            key  = "dGVzdC1vcy1rZXktZGF0YQo="
+          }
+        }
+        cluster = {
+          id     = "test-cluster-id"
+          secret = "test-cluster-secret"
+        }
+        secrets = {
+          bootstrap_token             = "test-bootstrap-token"
+          secretbox_encryption_secret = "test-secretbox-secret"
+        }
+        trustdinfo = {
+          token = "test-trustd-token"
+        }
+      }
+      client_configuration = {
+        ca_certificate     = "dGVzdC1jYS1jZXJ0LWRhdGEK"
+        client_certificate = "dGVzdC1jbGllbnQtY2VydC1kYXRhCg=="
+        client_key         = "dGVzdC1jbGllbnQta2V5LWRhdGEK"
+      }
     }
   }
 
@@ -188,11 +305,47 @@ run "dns_record_creation" {
       enable_k8s_oidc_auth = false
     }
     talos_machine_secrets = {
-      cluster_id     = "test-cluster-id"
-      cluster_secret = "test-secret"
-      machine_token  = "test-token"
-      ca_crt         = "test-ca"
-      ca_key         = "test-key"
+      id            = "test-secrets-id"
+      talos_version = "v1.5.0"
+      machine_secrets = {
+        certs = {
+          etcd = {
+            cert = "dGVzdC1ldGNkLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1ldGNkLWtleS1kYXRhCg=="
+          }
+          k8s = {
+            cert = "dGVzdC1rOHMtY2VydC1kYXRhCg=="
+            key  = "dGVzdC1rOHMta2V5LWRhdGEK"
+          }
+          k8s_aggregator = {
+            cert = "dGVzdC1hZ2dyZWdhdG9yLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1hZ2dyZWdhdG9yLWtleS1kYXRhCg=="
+          }
+          k8s_serviceaccount = {
+            key = "dGVzdC1zYS1rZXktZGF0YQo="
+          }
+          os = {
+            cert = "dGVzdC1vcy1jZXJ0LWRhdGEK"
+            key  = "dGVzdC1vcy1rZXktZGF0YQo="
+          }
+        }
+        cluster = {
+          id     = "test-cluster-id"
+          secret = "test-cluster-secret"
+        }
+        secrets = {
+          bootstrap_token             = "test-bootstrap-token"
+          secretbox_encryption_secret = "test-secretbox-secret"
+        }
+        trustdinfo = {
+          token = "test-trustd-token"
+        }
+      }
+      client_configuration = {
+        ca_certificate     = "dGVzdC1jYS1jZXJ0LWRhdGEK"
+        client_certificate = "dGVzdC1jbGllbnQtY2VydC1kYXRhCg=="
+        client_key         = "dGVzdC1jbGllbnQta2V5LWRhdGEK"
+      }
     }
   }
 
@@ -246,16 +399,227 @@ run "custom_sysctls" {
       enable_k8s_oidc_auth = false
     }
     talos_machine_secrets = {
-      cluster_id     = "test-cluster-id"
-      cluster_secret = "test-secret"
-      machine_token  = "test-token"
-      ca_crt         = "test-ca"
-      ca_key         = "test-key"
+      id            = "test-secrets-id"
+      talos_version = "v1.5.0"
+      machine_secrets = {
+        certs = {
+          etcd = {
+            cert = "dGVzdC1ldGNkLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1ldGNkLWtleS1kYXRhCg=="
+          }
+          k8s = {
+            cert = "dGVzdC1rOHMtY2VydC1kYXRhCg=="
+            key  = "dGVzdC1rOHMta2V5LWRhdGEK"
+          }
+          k8s_aggregator = {
+            cert = "dGVzdC1hZ2dyZWdhdG9yLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1hZ2dyZWdhdG9yLWtleS1kYXRhCg=="
+          }
+          k8s_serviceaccount = {
+            key = "dGVzdC1zYS1rZXktZGF0YQo="
+          }
+          os = {
+            cert = "dGVzdC1vcy1jZXJ0LWRhdGEK"
+            key  = "dGVzdC1vcy1rZXktZGF0YQo="
+          }
+        }
+        cluster = {
+          id     = "test-cluster-id"
+          secret = "test-cluster-secret"
+        }
+        secrets = {
+          bootstrap_token             = "test-bootstrap-token"
+          secretbox_encryption_secret = "test-secretbox-secret"
+        }
+        trustdinfo = {
+          token = "test-trustd-token"
+        }
+      }
+      client_configuration = {
+        ca_certificate     = "dGVzdC1jYS1jZXJ0LWRhdGEK"
+        client_certificate = "dGVzdC1jbGllbnQtY2VydC1kYXRhCg=="
+        client_key         = "dGVzdC1jbGllbnQta2V5LWRhdGEK"
+      }
     }
   }
 
   assert {
     condition     = length(var.sysctls) > 0
     error_message = "Custom sysctls should be configurable"
+  }
+}
+
+# Test Kubernetes OIDC authentication enabled
+run "k8s_oidc_auth_enabled" {
+  command = plan
+
+  variables {
+    node_name                      = "cp-1"
+    node_domain                    = "cluster.example.com"
+    cluster_name                   = "test-cluster"
+    talos_ami_id                   = "ami-12345678"
+    instance_type                  = "m5.xlarge"
+    subnet_id                      = "subnet-abc123"
+    node_security_group_ids        = ["sg-abc123"]
+    node_volume_size               = 100
+    node_volume_type               = "gp3"
+    apiserver_target_group_arn     = "arn:aws:elasticloadbalancing:us-west-2:123456789:targetgroup/test/abc"
+    apiserver_url                  = "https://api.cluster.example.com:6443"
+    dns_zone_id                    = "test-zone-id"
+    dns_provider                   = "cloudflare"
+    group_nodes_together           = false
+    bootstrap                      = false
+    allow_scheduling_control_plane = false
+    root_disk_mount                = "/dev/xvda"
+    sysctls                        = {}
+    oidc_configuration = {
+      # IRSA configuration
+      bucket_name = "test-oidc-bucket"
+      jwks_url    = "https://oidc.example.com/.well-known/jwks.json"
+      sa_issuer   = "https://oidc.example.com"
+      # Kubernetes OIDC auth enabled
+      enable_k8s_oidc_auth = true
+      ca_file_path         = "/etc/kubernetes/pki/oidc-ca.crt"
+      client_id            = "kubernetes"
+      groups_claim         = "groups"
+      issuer_url           = "https://oidc.example.com"
+      username_claim       = "email"
+    }
+    talos_machine_secrets = {
+      id            = "test-secrets-id"
+      talos_version = "v1.5.0"
+      machine_secrets = {
+        certs = {
+          etcd = {
+            cert = "dGVzdC1ldGNkLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1ldGNkLWtleS1kYXRhCg=="
+          }
+          k8s = {
+            cert = "dGVzdC1rOHMtY2VydC1kYXRhCg=="
+            key  = "dGVzdC1rOHMta2V5LWRhdGEK"
+          }
+          k8s_aggregator = {
+            cert = "dGVzdC1hZ2dyZWdhdG9yLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1hZ2dyZWdhdG9yLWtleS1kYXRhCg=="
+          }
+          k8s_serviceaccount = {
+            key = "dGVzdC1zYS1rZXktZGF0YQo="
+          }
+          os = {
+            cert = "dGVzdC1vcy1jZXJ0LWRhdGEK"
+            key  = "dGVzdC1vcy1rZXktZGF0YQo="
+          }
+        }
+        cluster = {
+          id     = "test-cluster-id"
+          secret = "test-cluster-secret"
+        }
+        secrets = {
+          bootstrap_token             = "test-bootstrap-token"
+          secretbox_encryption_secret = "test-secretbox-secret"
+        }
+        trustdinfo = {
+          token = "test-trustd-token"
+        }
+      }
+      client_configuration = {
+        ca_certificate     = "dGVzdC1jYS1jZXJ0LWRhdGEK"
+        client_certificate = "dGVzdC1jbGllbnQtY2VydC1kYXRhCg=="
+        client_key         = "dGVzdC1jbGllbnQta2V5LWRhdGEK"
+      }
+    }
+  }
+
+  assert {
+    condition     = var.oidc_configuration.enable_k8s_oidc_auth == true
+    error_message = "Kubernetes OIDC auth should be enabled when configured"
+  }
+
+  assert {
+    condition     = var.oidc_configuration.client_id == "kubernetes"
+    error_message = "OIDC client ID should match input"
+  }
+}
+
+# Test AWS IAM Authenticator enabled
+run "aws_iam_authenticator_enabled" {
+  command = plan
+
+  variables {
+    node_name                      = "cp-1"
+    node_domain                    = "cluster.example.com"
+    cluster_name                   = "test-cluster"
+    talos_ami_id                   = "ami-12345678"
+    instance_type                  = "m5.xlarge"
+    subnet_id                      = "subnet-abc123"
+    node_security_group_ids        = ["sg-abc123"]
+    node_volume_size               = 100
+    node_volume_type               = "gp3"
+    apiserver_target_group_arn     = "arn:aws:elasticloadbalancing:us-west-2:123456789:targetgroup/test/abc"
+    apiserver_url                  = "https://api.cluster.example.com:6443"
+    dns_zone_id                    = "test-zone-id"
+    dns_provider                   = "cloudflare"
+    group_nodes_together           = false
+    bootstrap                      = false
+    allow_scheduling_control_plane = false
+    root_disk_mount                = "/dev/xvda"
+    sysctls                        = {}
+    enable_aws_iam_authenticator   = true
+    oidc_configuration = {
+      # IRSA configuration
+      bucket_name = "test-oidc-bucket"
+      jwks_url    = "https://oidc.example.com/.well-known/jwks.json"
+      sa_issuer   = "https://oidc.example.com"
+      # Kubernetes OIDC auth disabled
+      enable_k8s_oidc_auth = false
+    }
+    talos_machine_secrets = {
+      id            = "test-secrets-id"
+      talos_version = "v1.5.0"
+      machine_secrets = {
+        certs = {
+          etcd = {
+            cert = "dGVzdC1ldGNkLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1ldGNkLWtleS1kYXRhCg=="
+          }
+          k8s = {
+            cert = "dGVzdC1rOHMtY2VydC1kYXRhCg=="
+            key  = "dGVzdC1rOHMta2V5LWRhdGEK"
+          }
+          k8s_aggregator = {
+            cert = "dGVzdC1hZ2dyZWdhdG9yLWNlcnQtZGF0YQo="
+            key  = "dGVzdC1hZ2dyZWdhdG9yLWtleS1kYXRhCg=="
+          }
+          k8s_serviceaccount = {
+            key = "dGVzdC1zYS1rZXktZGF0YQo="
+          }
+          os = {
+            cert = "dGVzdC1vcy1jZXJ0LWRhdGEK"
+            key  = "dGVzdC1vcy1rZXktZGF0YQo="
+          }
+        }
+        cluster = {
+          id     = "test-cluster-id"
+          secret = "test-cluster-secret"
+        }
+        secrets = {
+          bootstrap_token             = "test-bootstrap-token"
+          secretbox_encryption_secret = "test-secretbox-secret"
+        }
+        trustdinfo = {
+          token = "test-trustd-token"
+        }
+      }
+      client_configuration = {
+        ca_certificate     = "dGVzdC1jYS1jZXJ0LWRhdGEK"
+        client_certificate = "dGVzdC1jbGllbnQtY2VydC1kYXRhCg=="
+        client_key         = "dGVzdC1jbGllbnQta2V5LWRhdGEK"
+      }
+    }
+  }
+
+  assert {
+    condition     = var.enable_aws_iam_authenticator == true
+    error_message = "AWS IAM Authenticator should be enabled when configured"
   }
 }

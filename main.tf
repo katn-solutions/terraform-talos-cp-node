@@ -118,6 +118,12 @@ variable "sysctls" {
 
 }
 
+variable "enable_aws_iam_authenticator" {
+  type        = bool
+  description = "Enable AWS IAM Authenticator webhook authentication"
+  default     = false
+}
+
 resource "aws_instance" "cp-instance" {
   ami                    = var.talos_ami_id
   instance_type          = var.instance_type
@@ -252,32 +258,48 @@ resource "talos_machine_configuration_apply" "cp-instance" {
       },
       cluster = {
         allowSchedulingOnControlPlanes : var.allow_scheduling_control_plane
-        apiServer = {
-          auditPolicy : {
-            apiVersion : "audit.k8s.io/v1"
-            kind : "Policy"
-            rules : [
+        apiServer = merge(
+          {
+            auditPolicy : {
+              apiVersion : "audit.k8s.io/v1"
+              kind : "Policy"
+              rules : [
+                {
+                  level : "Metadata"
+                }
+              ]
+            }
+            extraArgs = merge(
               {
-                level : "Metadata"
+                # IRSA (Service Account) configuration - always enabled
+                service-account-issuer : var.oidc_configuration.sa_issuer
+                service-account-jwks-uri : var.oidc_configuration.jwks_url
+              },
+              # Kubernetes OIDC Authentication - only add if enabled
+              var.oidc_configuration.enable_k8s_oidc_auth ? {
+                oidc-issuer-url : var.oidc_configuration.issuer_url
+                oidc-client-id : var.oidc_configuration.client_id
+                oidc-ca-file : var.oidc_configuration.ca_file_path
+                oidc-username-claim : var.oidc_configuration.username_claim
+                oidc-groups-claim : var.oidc_configuration.groups_claim
+              } : {},
+              # AWS IAM Authenticator - only add if enabled
+              var.enable_aws_iam_authenticator ? {
+                authentication-token-webhook-config-file : "/etc/kubernetes/aws-iam-authenticator/kubeconfig.yaml"
+              } : {}
+            )
+          },
+          # AWS IAM Authenticator extraVolumes - only add if enabled
+          var.enable_aws_iam_authenticator ? {
+            extraVolumes : [
+              {
+                hostPath : "/etc/kubernetes/aws-iam-authenticator/"
+                mountPath : "/etc/kubernetes/aws-iam-authenticator/"
+                readonly : true
               }
             ]
-          }
-          extraArgs = merge(
-            {
-              # IRSA (Service Account) configuration - always enabled
-              service-account-issuer : var.oidc_configuration.sa_issuer
-              service-account-jwks-uri : var.oidc_configuration.jwks_url
-            },
-            # Kubernetes OIDC Authentication - only add if enabled
-            var.oidc_configuration.enable_k8s_oidc_auth ? {
-              oidc-issuer-url : var.oidc_configuration.issuer_url
-              oidc-client-id : var.oidc_configuration.client_id
-              oidc-ca-file : var.oidc_configuration.ca_file_path
-              oidc-username-claim : var.oidc_configuration.username_claim
-              oidc-groups-claim : var.oidc_configuration.groups_claim
-            } : {}
-          )
-        }
+          } : {}
+        )
       }
     })
   ]
